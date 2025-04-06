@@ -12,8 +12,8 @@ public class Profile {
     private String username;
     private PublicInfo publicInfo;
     private PrivateInfo privateInfo;
-    private HashMap<Long, Invitation> receivedInvitations;
-    private HashMap<Long, Invitation> sentInvitations;
+    private HashMap<Long, Invitation> receivedInvitations = new HashMap<>();
+    private HashMap<Long, Invitation> sentInvitations = new HashMap<>();
 
     public Profile(Long id, String username, PublicInfo publicInfo, PrivateInfo privateInfo) {
         this.id = id;
