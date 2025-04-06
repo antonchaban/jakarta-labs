@@ -14,4 +14,11 @@ public class Profile {
     private PrivateInfo privateInfo;
     private HashMap<Long, Invitation> receivedInvitations;
     private HashMap<Long, Invitation> sentInvitations;
+
+    public Profile(Long id, String username, PublicInfo publicInfo, PrivateInfo privateInfo) {
+        this.id = id;
+        this.username = username;
+        this.publicInfo = publicInfo;
+        this.privateInfo = privateInfo;
+    }
 }

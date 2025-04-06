@@ -5,6 +5,7 @@ import com.example.lab2.models.Profile;
 
 import java.util.HashMap;
 
+@Deprecated
 public interface InvitationDao extends AbstractDao<Invitation> {
     HashMap<Long, Invitation> findBySenderId(Long senderId);
     HashMap<Long, Invitation> findByReceiverId(Long receiverId);

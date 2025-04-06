@@ -56,6 +56,12 @@ public class InMemoryProfileDao extends InMemoryAbstractDao<Profile> implements 
     }
 
     @Override
+    public void acceptInvitation(Profile sender, Profile receiver, Invitation invitation) {
+        sender.getSentInvitations().get(invitation.getId()).setAcceptStatus(true);
+        receiver.getReceivedInvitations().get(invitation.getId()).setAcceptStatus(true);
+    }
+
+    @Override
     public void newProfile(Profile profile) {
         this.insert(profile, true);
         profile.setId(this.idGetter.apply(profile));

@@ -13,4 +13,5 @@ public interface ProfileDao extends AbstractDao<Profile> {
     void newProfile(Profile profile);
     void addInvitation(Profile sender, Profile receiver, Invitation invitation);
     void deleteInvitation(Profile sender, Profile receiver, Invitation invitation);
+    void acceptInvitation(Profile sender, Profile receiver, Invitation invitation);
 }
