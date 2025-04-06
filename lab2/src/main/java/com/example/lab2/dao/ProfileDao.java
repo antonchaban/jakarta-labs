@@ -11,6 +11,6 @@ public interface ProfileDao extends AbstractDao<Profile> {
     Collection<Profile> findByText(String string);
 
     void newProfile(Profile profile);
-    void addInvitation(Profile profile, Invitation invitation);
-    void deleteInvitation(Profile profile, Invitation invitation);
+    void addInvitation(Profile sender, Profile receiver, Invitation invitation);
+    void deleteInvitation(Profile sender, Profile receiver, Invitation invitation);
 }

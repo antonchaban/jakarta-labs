@@ -3,7 +3,7 @@ package com.example.lab2.dao;
 import java.util.Collection;
 
 public interface AbstractDao<T> {
-    T get(Integer id);
+    T get(Long id);
 
     Collection<T> findAll();
 
