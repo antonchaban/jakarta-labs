@@ -10,28 +10,46 @@
 <html>
 <head>
     <title>Profiles</title>
-    <%@include file="style.jspf" %>
+    <%@ include file="style.jspf" %>
 </head>
 <body>
-<%@include file="header.jspf" %>
+<%@ include file="header.jspf" %>
+
+<c:if test="${empty profiles}">
+    <p>No profiles found.</p>
+</c:if>
+
 <c:forEach var="profile" items="${profiles}">
     <div class="job-wrapper">
-        <h1><a href="profile?id=${profile.id}"><c:out value="${profile.username}"/></a></h1>
-        <hr>
+        <h2>
+            <a href="profile.jsp?id=${profile.id}">
+                <c:out value="${profile.username}"/>
+            </a>
+        </h2>
+        <hr/>
         <ul class="requirements">
-            <li>Age: <span style="color: red"><c:out
-                    value=" ${profile.publicInfo.age} year(s)"/></span>
+            <li>
+                Age: <span style="color: red">
+                        <c:out value="${profile.publicInfo.age}"/> year(s)
+                    </span>
             </li>
             <li class="description">
                 <c:out value="${profile.publicInfo.description}"/>
             </li>
         </ul>
         <div class="more">
-            <a href="profile?id=${profile.id}">View More</a>
+            <c:choose>
+                <c:when test="${not empty sessionScope.user}">
+                    <a href="profile.jsp?id=${profile.id}">View Profile</a>
+                </c:when>
+                <c:otherwise>
+                    <a href="login.jsp">Login to View</a>
+                </c:otherwise>
+            </c:choose>
         </div>
-
     </div>
 </c:forEach>
-<%@include file="footer.jspf" %>
+
+<%@ include file="footer.jspf" %>
 </body>
 </html>
