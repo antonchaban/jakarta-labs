@@ -12,6 +12,7 @@ public interface ProfileService {
     boolean checkPass(Profile profile, String password);
     boolean checkProfile(Profile profile);
     void newProfile(Profile profile);
+    void updateProfile(Profile profile);
     Collection<Invitation> getSentInvitations(Profile profile);
     Collection<Invitation> getReceivedInvitations(Profile profile);
     Collection<Profile> findByText(String string);
