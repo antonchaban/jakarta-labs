@@ -47,6 +47,11 @@ public class ProfileServiceImpl implements ProfileService{
     }
 
     @Override
+    public void updateProfile(Profile profile) {
+        daoFactory.getProfileDao().update(profile);
+    }
+
+    @Override
     public Collection<Invitation> getSentInvitations(Profile profile) {
         return daoFactory.getProfileDao().findById(profile.getId()).getSentInvitations().values();
     }
