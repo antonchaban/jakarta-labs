@@ -5,6 +5,7 @@ import com.example.lab2.models.PrivateInfo;
 import com.example.lab2.models.Profile;
 import com.example.lab2.models.PublicInfo;
 import com.example.lab2.services.ProfileService;
+import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,12 +18,13 @@ import java.util.Objects;
 
 @WebServlet(name = "FrontController", urlPatterns = {"/date-app/*"})
 public class FrontController extends HttpServlet {
+    @EJB
     ProfileService profileService;
 
-    @Override
-    public void init() {
-        profileService = (ProfileService) getServletContext().getAttribute("profileService");
-    }
+//    @Override
+//    public void init() {
+//        profileService = (ProfileService) getServletContext().getAttribute("profileService");
+//    }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
