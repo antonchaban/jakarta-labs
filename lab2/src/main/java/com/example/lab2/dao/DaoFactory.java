@@ -1,7 +1,5 @@
 package com.example.lab2.dao;
 
-import com.example.lab2.dao.ProfileDao;
-
 public interface DaoFactory {
     ProfileDao getProfileDao();
 //    InvitationDao getInvitationDao(); deprecated
