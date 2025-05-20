@@ -13,6 +13,7 @@ public interface ProfileService {
     boolean checkProfile(Profile profile);
     void newProfile(Profile profile);
     void updateProfile(Profile profile);
+    void deleteProfile(Profile profile);
     Collection<Invitation> getSentInvitations(Profile profile);
     Collection<Invitation> getReceivedInvitations(Profile profile);
     Collection<Profile> findByText(String string);

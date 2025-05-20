@@ -1,11 +1,13 @@
 package com.example.lab2.services;
 
 import com.example.lab2.dao.DaoFactory;
+import com.example.lab2.dao.ProfileDao;
 import com.example.lab2.entities.Invitation;
 import com.example.lab2.entities.Profile;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Local;
 import jakarta.ejb.Stateless;
+import jakarta.ws.rs.NotFoundException;
 
 import java.util.Collection;
 import java.util.function.UnaryOperator;
@@ -74,6 +76,15 @@ public class ProfileServiceImpl implements ProfileService{
             return getAllProfiles();
         }
         return daoFactory.getProfileDao().findByText(string);
+    }
+
+    @Override
+    public void deleteProfile(Profile profile) {
+        Profile p = daoFactory.getProfileDao().findById(profile.getId());
+        if (p == null) {
+            throw new NotFoundException("Project with id=" + profile.getId() + " not found");
+        }
+        daoFactory.getProfileDao().delete(p);
     }
 
     @Override
