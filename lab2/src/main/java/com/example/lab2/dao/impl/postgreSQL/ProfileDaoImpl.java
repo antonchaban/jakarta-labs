@@ -1,0 +1,61 @@
+package com.example.lab2.dao.impl.postgreSQL;
+
+import com.example.lab2.entities.Profile;
+import com.example.lab2.entities.Invitation;
+import jakarta.ejb.Stateless;
+import jakarta.persistence.TypedQuery;
+import java.util.Collection;
+
+@Stateless
+public class ProfileDaoImpl extends AbstractDaoImpl<Profile> implements ProfileDao {
+    public ProfileDaoImpl() { super(Profile.class); }
+
+    @Override
+    public Profile findByUsername(String username) {
+        TypedQuery<Profile> q = em.createQuery(
+                "SELECT p FROM Profile p WHERE p.username = :u", Profile.class);
+        q.setParameter("u", username);
+        return q.getResultStream().findFirst().orElse(null);
+    }
+
+    @Override
+    public Profile findById(Long id) {
+        return get(id);
+    }
+
+    @Override
+    public Collection<Profile> findByText(String text) {
+        TypedQuery<Profile> q = em.createQuery(
+                "SELECT p FROM Profile p WHERE LOWER(p.username) LIKE :t " +
+                        "OR LOWER(p.publicInfo.bio) LIKE :t", Profile.class);
+        q.setParameter("t", "%" + text.toLowerCase() + "%");
+        return q.getResultList();
+    }
+
+    @Override
+    public void newProfile(Profile profile) {
+        insert(profile, true);
+    }
+
+    @Override
+    public void addInvitation(Profile sender, Profile receiver, Invitation invitation) {
+        invitation.setSender(sender);
+        invitation.setReceiver(receiver);
+        em.persist(invitation);
+    }
+
+    @Override
+    public void deleteInvitation(Profile sender, Profile receiver, Invitation invitation) {
+        Invitation inv = em.find(Invitation.class, invitation.getId());
+        if (inv != null) em.remove(inv);
+    }
+
+    @Override
+    public void acceptInvitation(Profile sender, Profile receiver, Invitation invitation) {
+        Invitation inv = em.find(Invitation.class, invitation.getId());
+        if (inv != null) {
+            inv.setAcceptStatus(true);
+            em.merge(inv);
+        }
+    }
+}
