@@ -3,10 +3,15 @@ package com.example.lab2.services;
 import com.example.lab2.dao.DaoFactory;
 import com.example.lab2.models.Invitation;
 import com.example.lab2.models.Profile;
+import jakarta.ejb.Local;
+import jakarta.ejb.Stateless;
 
 import java.util.Collection;
 import java.util.function.UnaryOperator;
 
+
+@Stateless
+@Local(ProfileService.class)
 public class ProfileServiceImpl implements ProfileService{
     DaoFactory daoFactory;
     UnaryOperator<String> passHasher;
