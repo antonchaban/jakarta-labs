@@ -1,5 +1,6 @@
-package com.example.lab2.dao.impl.postgreSQL;
+package com.example.lab2.dao.impl;
 
+import com.example.lab2.dao.ProfileDao;
 import com.example.lab2.entities.Profile;
 import com.example.lab2.entities.Invitation;
 import jakarta.ejb.Stateless;

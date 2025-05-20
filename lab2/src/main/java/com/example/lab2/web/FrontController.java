@@ -1,9 +1,9 @@
 package com.example.lab2.web;
 
-import com.example.lab2.models.Invitation;
-import com.example.lab2.models.PrivateInfo;
-import com.example.lab2.models.Profile;
-import com.example.lab2.models.PublicInfo;
+import com.example.lab2.entities.Invitation;
+import com.example.lab2.entities.PrivateInfo;
+import com.example.lab2.entities.Profile;
+import com.example.lab2.entities.PublicInfo;
 import com.example.lab2.services.ProfileService;
 import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
@@ -131,7 +131,7 @@ public class FrontController extends HttpServlet {
         Profile receiver = profileService.getById(toId);
         long invId = sender.getId() + receiver.getId();
 
-        Invitation inv = new Invitation(invId, sender.getId(), receiver.getId(), false);
+        Invitation inv = new Invitation(invId, sender, receiver, false);
         profileService.addInvitation(sender, receiver, inv);
 
         resp.sendRedirect(req.getContextPath() + "/date-app/profile?id=" + toId);
@@ -144,7 +144,7 @@ public class FrontController extends HttpServlet {
         Profile sender   = profileService.getById(fromId);
         Invitation inv = profileService.getReceivedInvitations(receiver)
                 .stream()
-                .filter(item -> Objects.equals(item.getSenderId(), fromId))
+                .filter(item -> Objects.equals(item.getId(), fromId))
                 .findFirst()
                 .get();
 
@@ -188,10 +188,14 @@ public class FrontController extends HttpServlet {
         String password = request.getParameter("password");
         String email = request.getParameter("email");
         Integer age = Integer.parseInt(request.getParameter("age"));
-        Profile user = new Profile(6L, username, new PublicInfo(bio, age), new PrivateInfo(email, password));
+        Profile profile = new Profile();
+        profile.setId(6L);
+        profile.setUsername(username);
+        profile.setPublicInfo(new PublicInfo(bio, age));
+        profile.setPrivateInfo(new PrivateInfo(email, password));
 
-        profileService.newProfile(user);
-        request.getSession().setAttribute("user", user);
+        profileService.newProfile(profile);
+        request.getSession().setAttribute("user", profile);
         response.sendRedirect(".");
 
     }

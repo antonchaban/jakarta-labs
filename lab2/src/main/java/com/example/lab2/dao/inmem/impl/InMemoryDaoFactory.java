@@ -1,7 +1,7 @@
-package com.example.lab2.dao.impl.inmem;
+package com.example.lab2.dao.inmem.impl;
 
-import com.example.lab2.dao.DaoFactory;
-import com.example.lab2.dao.ProfileDao;
+import com.example.lab2.dao.inmem.DaoFactory;
+import com.example.lab2.dao.inmem.ProfileDao;
 
 public class InMemoryDaoFactory implements DaoFactory {
     InMemoryDatabase database;

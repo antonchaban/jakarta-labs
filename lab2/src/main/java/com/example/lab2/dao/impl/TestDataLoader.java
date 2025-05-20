@@ -1,4 +1,4 @@
-package com.example.lab2.dao.impl.postgreSQL;
+package com.example.lab2.dao.impl;
 
 import com.example.lab2.entities.Invitation;
 import com.example.lab2.entities.PrivateInfo;

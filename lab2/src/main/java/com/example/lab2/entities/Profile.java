@@ -6,8 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
 
 @Entity
 @Table(name = "profiles")
@@ -26,8 +25,8 @@ public class Profile {
     private PrivateInfo privateInfo;
 
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Invitation> sentInvitations = new HashSet<>();
+    private HashMap<Long, Invitation> sentInvitations = new HashMap<>();
 
     @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Invitation> receivedInvitations = new HashSet<>();
+    private HashMap<Long, Invitation> receivedInvitations = new HashMap<>();
 }

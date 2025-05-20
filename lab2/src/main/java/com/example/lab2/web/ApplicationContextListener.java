@@ -1,10 +1,10 @@
 package com.example.lab2.web;
 
-import com.example.lab2.dao.DaoFactory;
-import com.example.lab2.dao.impl.inmem.InMemoryDatabase;
-import com.example.lab2.dao.impl.inmem.InMemoryTestData;
-import com.example.lab2.services.ProfileService;
-import com.example.lab2.services.ProfileServiceImpl;
+import com.example.lab2.dao.inmem.DaoFactory;
+import com.example.lab2.dao.inmem.impl.InMemoryDatabase;
+import com.example.lab2.dao.inmem.impl.InMemoryTestData;
+import com.example.lab2.services.inmem.ProfileService;
+import com.example.lab2.services.inmem.ProfileServiceImpl;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;

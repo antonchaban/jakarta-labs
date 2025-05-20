@@ -1,5 +1,6 @@
-package com.example.lab2.dao;
+package com.example.lab2.dao.inmem;
 
+import com.example.lab2.dao.AbstractDao;
 import com.example.lab2.models.Invitation;
 import com.example.lab2.models.Profile;
 

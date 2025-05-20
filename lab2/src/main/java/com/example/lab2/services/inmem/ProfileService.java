@@ -1,7 +1,7 @@
-package com.example.lab2.services;
+package com.example.lab2.services.inmem;
 
-import com.example.lab2.entities.Invitation;
-import com.example.lab2.entities.Profile;
+import com.example.lab2.models.Invitation;
+import com.example.lab2.models.Profile;
 
 import java.util.Collection;
 

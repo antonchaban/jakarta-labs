@@ -1,10 +1,4 @@
-package com.example.lab2.dao.impl.inmem;
-
-import com.example.lab2.dao.InvitationDao;
-import com.example.lab2.models.Invitation;
-import com.example.lab2.models.Profile;
-
-import java.util.HashMap;
+package com.example.lab2.dao.inmem.impl;
 
 //@Deprecated
 //public class InMemoryInvitationDao extends InMemoryAbstractDao<Invitation> implements InvitationDao {

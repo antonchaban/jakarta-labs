@@ -1,9 +1,8 @@
-package com.example.lab2.services;
+package com.example.lab2.services.inmem;
 
-import com.example.lab2.dao.DaoFactory;
-import com.example.lab2.entities.Invitation;
-import com.example.lab2.entities.Profile;
-import jakarta.ejb.EJB;
+import com.example.lab2.dao.inmem.DaoFactory;
+import com.example.lab2.models.Invitation;
+import com.example.lab2.models.Profile;
 import jakarta.ejb.Local;
 import jakarta.ejb.Stateless;
 
@@ -14,7 +13,6 @@ import java.util.function.UnaryOperator;
 @Stateless
 @Local(ProfileService.class)
 public class ProfileServiceImpl implements ProfileService{
-    @EJB
     DaoFactory daoFactory;
     UnaryOperator<String> passHasher;
 

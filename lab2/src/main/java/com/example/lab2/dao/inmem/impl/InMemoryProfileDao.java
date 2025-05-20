@@ -1,11 +1,10 @@
-package com.example.lab2.dao.impl.inmem;
+package com.example.lab2.dao.inmem.impl;
 
-import com.example.lab2.dao.ProfileDao;
+import com.example.lab2.dao.inmem.ProfileDao;
 import com.example.lab2.models.Invitation;
 import com.example.lab2.models.Profile;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

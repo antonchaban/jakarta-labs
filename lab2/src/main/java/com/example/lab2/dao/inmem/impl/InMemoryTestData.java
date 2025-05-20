@@ -1,4 +1,4 @@
-package com.example.lab2.dao.impl.inmem;
+package com.example.lab2.dao.inmem.impl;
 
 import com.example.lab2.models.Invitation;
 import com.example.lab2.models.PrivateInfo;

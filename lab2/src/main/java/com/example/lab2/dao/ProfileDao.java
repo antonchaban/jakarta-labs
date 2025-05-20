@@ -1,7 +1,8 @@
 package com.example.lab2.dao;
 
-import com.example.lab2.models.Invitation;
-import com.example.lab2.models.Profile;
+import com.example.lab2.dao.AbstractDao;
+import com.example.lab2.entities.Invitation;
+import com.example.lab2.entities.Profile;
 
 import java.util.Collection;
 
