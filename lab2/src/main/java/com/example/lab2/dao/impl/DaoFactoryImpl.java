@@ -3,9 +3,11 @@ package com.example.lab2.dao.impl;
 import com.example.lab2.dao.DaoFactory;
 import com.example.lab2.dao.ProfileDao;
 import jakarta.ejb.EJB;
+import jakarta.ejb.Local;
 import jakarta.ejb.Stateless;
 
 @Stateless
+@Local(DaoFactory.class)
 public class DaoFactoryImpl implements DaoFactory {
 
     @EJB
