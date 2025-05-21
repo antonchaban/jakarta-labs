@@ -53,7 +53,7 @@
 
     <div class="form-actions">
       <button type="submit">Save Changes</button>
-      <a href="profile.jsp?id=${profile.id}">
+      <a href="profile?id=${profile.id}">
         Cancel
       </a>
     </div>

@@ -2,17 +2,17 @@
 <%@ page pageEncoding="UTF-8" %>
 <header>
     <div class="topnav">
-        <a class="active" href="/do/">Home</a>
+        <a class="active" href="/date-app/home">Home</a>
         <c:if test="${!empty profile}">
             <div class="creating">
-                <form action="/register" method="POST">
+                <form action="/date-app/register" method="POST">
                     <button type="submit">Create New Profile</button>
                 </form>
             </div>
         </c:if>
         <c:if test="${!empty user}">
             <div class="login-container">
-                <form action="/do/logout" method="POST">
+                <form action="/date-app/logout" method="POST">
                     <c:out value="${user.name}"/>
                     <button type="submit">Logout</button>
                 </form>
@@ -20,14 +20,14 @@
         </c:if>
         <c:if test="${empty user}">
             <div class="login-container">
-                <form action="login.jsp" method="POST">
+                <form action="/date-app/login" method="POST">
                     <button type="submit">Login</button>
-                    <button type="submit" formaction="register.jsp">Register</button>
+                    <button type="submit" formaction="register">Register</button>
                 </form>
             </div>
         </c:if>
         <div class="search-container">
-            <form action="/search">
+            <form action="/date-app/search">
                 <input type="text" placeholder="Search.." name="search">
                 <button type="submit">🔍</button>
             </form>

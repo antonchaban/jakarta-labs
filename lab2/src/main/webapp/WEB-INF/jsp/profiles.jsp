@@ -22,7 +22,7 @@
 <c:forEach var="profile" items="${profiles}">
     <div class="job-wrapper">
         <h2>
-            <a href="profile.jsp?id=${profile.id}">
+            <a href="/date-app/profile?id=${profile.id}">
                 <c:out value="${profile.username}"/>
             </a>
         </h2>
@@ -34,16 +34,16 @@
                     </span>
             </li>
             <li class="description">
-                <c:out value="${profile.publicInfo.description}"/>
+                <c:out value="${profile.publicInfo.bio}"/>
             </li>
         </ul>
         <div class="more">
             <c:choose>
                 <c:when test="${not empty sessionScope.user}">
-                    <a href="profile.jsp?id=${profile.id}">View Profile</a>
+                    <a href="/date-app/profile?id=${profile.id}">View Profile</a>
                 </c:when>
                 <c:otherwise>
-                    <a href="login.jsp">Login to View</a>
+                    <a href="/date-app/login">Login to View</a>
                 </c:otherwise>
             </c:choose>
         </div>
