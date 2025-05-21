@@ -1,11 +1,13 @@
 package com.example.lab2.web;
 
+import com.example.lab2.dao.impl.TestDataLoader;
 import com.example.lab2.entities.Invitation;
 import com.example.lab2.entities.PrivateInfo;
 import com.example.lab2.entities.Profile;
 import com.example.lab2.entities.PublicInfo;
 import com.example.lab2.services.ProfileService;
 import jakarta.ejb.EJB;
+import jakarta.ejb.Stateless;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,15 +18,16 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Objects;
 
+@Stateless
 @WebServlet(name = "FrontController", urlPatterns = {"/date-app/*"})
 public class FrontController extends HttpServlet {
-    @EJB
+    @EJB(beanName = "ProfileServiceImpl")
     ProfileService profileService;
 
-//    @Override
-//    public void init() {
-//        profileService = (ProfileService) getServletContext().getAttribute("profileService");
-//    }
+    @Override
+    public void init() {
+        //profileService = (ProfileService) getServletContext().getAttribute("profileService");
+    }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -32,6 +35,7 @@ public class FrontController extends HttpServlet {
         if (pathInfo == null) {
             pathInfo = "/";
         }
+
         try {
             switch (pathInfo) {
                 case "/login":
@@ -169,10 +173,10 @@ public class FrontController extends HttpServlet {
         request.getSession().invalidate();
 
         String login = request.getParameter("login");
-        Profile user = profileService.getByLogin(login);
         String password = request.getParameter("password");
+        Profile user = profileService.getByLogin(login);
 
-        if (!profileService.checkPass(user, password)) {
+        if (user != null && !profileService.checkPass(user, password)) {
             error(request, response, "Sorry, wrong password");
             return;
         }
