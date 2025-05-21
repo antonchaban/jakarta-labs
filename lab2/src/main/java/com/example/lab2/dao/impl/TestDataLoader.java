@@ -7,12 +7,14 @@ import com.example.lab2.entities.PublicInfo;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
 @Singleton
 @Startup
+@Stateless
 public class TestDataLoader {
     @PersistenceContext(unitName = "LabPU")
     private EntityManager em;

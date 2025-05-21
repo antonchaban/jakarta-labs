@@ -1,7 +1,6 @@
 package com.example.lab2.services;
 
 import com.example.lab2.dao.DaoFactory;
-import com.example.lab2.dao.ProfileDao;
 import com.example.lab2.entities.Invitation;
 import com.example.lab2.entities.Profile;
 import jakarta.ejb.EJB;
@@ -18,12 +17,7 @@ import java.util.function.UnaryOperator;
 public class ProfileServiceImpl implements ProfileService{
     @EJB
     DaoFactory daoFactory;
-    UnaryOperator<String> passHasher;
-
-    public ProfileServiceImpl(DaoFactory daoFactory, UnaryOperator<String> passHasher) {
-        this.daoFactory = daoFactory;
-        this.passHasher = passHasher;
-    }
+    UnaryOperator<String> passHasher = UnaryOperator.identity();
 
     @Override
     public Profile getByLogin(String login) {
@@ -62,12 +56,12 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Override
     public Collection<Invitation> getSentInvitations(Profile profile) {
-        return daoFactory.getProfileDao().findById(profile.getId()).getSentInvitations().values();
+        return daoFactory.getProfileDao().findById(profile.getId()).getSentInvitations();
     }
 
     @Override
     public Collection<Invitation> getReceivedInvitations(Profile profile) {
-        return daoFactory.getProfileDao().findById(profile.getId()).getReceivedInvitations().values();
+        return daoFactory.getProfileDao().findById(profile.getId()).getReceivedInvitations();
     }
 
     @Override

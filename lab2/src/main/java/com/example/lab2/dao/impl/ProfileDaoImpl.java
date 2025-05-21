@@ -3,11 +3,13 @@ package com.example.lab2.dao.impl;
 import com.example.lab2.dao.ProfileDao;
 import com.example.lab2.entities.Profile;
 import com.example.lab2.entities.Invitation;
+import jakarta.ejb.Local;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.TypedQuery;
 import java.util.Collection;
 
 @Stateless
+@Local(ProfileDao.class)
 public class ProfileDaoImpl extends AbstractDaoImpl<Profile> implements ProfileDao {
     public ProfileDaoImpl() { super(Profile.class); }
 
