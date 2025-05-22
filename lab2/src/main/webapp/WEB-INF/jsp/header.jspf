@@ -1,4 +1,4 @@
-<%@taglib prefix="c" uri="https://jakarta.ee/tags/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page pageEncoding="UTF-8" %>
 <header>
     <div class="topnav">
@@ -12,8 +12,10 @@
         </c:if>
         <c:if test="${!empty user}">
             <div class="login-container">
+                <div style="outline: 1px solid black; border-radius: 10px; padding: 5px;">
+                    <a href="/date-app/profile?id=${user.id}"><c:out value="${user.username}"/></a>
+                </div>
                 <form action="/date-app/logout" method="POST">
-                    <c:out value="${user.name}"/>
                     <button type="submit">Logout</button>
                 </form>
             </div>
