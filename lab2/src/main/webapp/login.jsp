@@ -168,8 +168,8 @@
     </div>
     <div class="right">
       <form method="post" action="/date-app/login" class="form" >
-        <label for="email">Email</label>
-        <input type="email" id="email" name="login">
+        <label for="login">Username</label>
+        <input type="text" id="login" name="login">
         <label for="password">Password</label>
         <input type="password" id="password" name="password">
         <input type="submit" id="submit" value="Login">
