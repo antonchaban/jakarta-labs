@@ -126,6 +126,7 @@
     input {
       background: transparent;
       border: 0;
+      border-radius: 10px;
       color: #f2f2f2;
       font-size: 20px;
       height: 30px;
