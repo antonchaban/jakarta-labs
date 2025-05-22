@@ -3,20 +3,16 @@ package com.example.lab2.services.inmem;
 import com.example.lab2.dao.inmem.DaoFactory;
 import com.example.lab2.models.Invitation;
 import com.example.lab2.models.Profile;
-import jakarta.ejb.Local;
-import jakarta.ejb.Stateless;
 
 import java.util.Collection;
 import java.util.function.UnaryOperator;
 
 
-@Stateless
-@Local(ProfileService.class)
-public class ProfileServiceImpl implements ProfileService{
+public class ProfileServiceInMemImpl implements ProfileService{
     DaoFactory daoFactory;
     UnaryOperator<String> passHasher;
 
-    public ProfileServiceImpl(DaoFactory daoFactory, UnaryOperator<String> passHasher) {
+    public ProfileServiceInMemImpl(DaoFactory daoFactory, UnaryOperator<String> passHasher) {
         this.daoFactory = daoFactory;
         this.passHasher = passHasher;
     }
