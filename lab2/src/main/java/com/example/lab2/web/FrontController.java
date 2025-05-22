@@ -7,7 +7,6 @@ import com.example.lab2.entities.Profile;
 import com.example.lab2.entities.PublicInfo;
 import com.example.lab2.services.ProfileService;
 import jakarta.ejb.EJB;
-import jakarta.ejb.Stateless;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,10 +17,9 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Objects;
 
-@Stateless
 @WebServlet(name = "FrontController", urlPatterns = {"/date-app/*"})
 public class FrontController extends HttpServlet {
-    @EJB(beanName = "ProfileServiceImpl")
+    @EJB
     ProfileService profileService;
 
     @Override
@@ -40,12 +38,6 @@ public class FrontController extends HttpServlet {
             switch (pathInfo) {
                 case "/login":
                     login(request, response);
-                    break;
-                case "/logout":
-                    logout(request, response);
-                    break;
-                case "/register":
-                    register(request, response);
                     break;
                 case "/main":
                     main(request, response);
@@ -176,13 +168,20 @@ public class FrontController extends HttpServlet {
         String password = request.getParameter("password");
         Profile user = profileService.getByLogin(login);
 
+        if (login == null || password == null) {
+            request.setAttribute("error", "Please provide login and password");
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            return;
+        }
+
         if (user != null && !profileService.checkPass(user, password)) {
             error(request, response, "Sorry, wrong password");
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
             return;
         }
 
         request.getSession().setAttribute("user", user);
-        response.sendRedirect(".");
+        response.sendRedirect(request.getContextPath() + "/date-app/");
     }
 
     protected void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -191,6 +190,13 @@ public class FrontController extends HttpServlet {
         String bio = request.getParameter("bio");
         String password = request.getParameter("password");
         String email = request.getParameter("email");
+
+        if (username == null || email == null || password == null || request.getParameter("age") == null) {
+            request.setAttribute("error","All fields are required");
+            request.getRequestDispatcher("/register.jsp").forward(request, response);
+            return;
+        }
+
         Integer age = Integer.parseInt(request.getParameter("age"));
         Profile profile = new Profile();
         profile.setId(6L);
@@ -200,8 +206,7 @@ public class FrontController extends HttpServlet {
 
         profileService.newProfile(profile);
         request.getSession().setAttribute("user", profile);
-        response.sendRedirect(".");
-
+        response.sendRedirect(request.getContextPath()+"/date-app/");
     }
 
     protected void logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -218,11 +223,27 @@ public class FrontController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
+        String path = request.getPathInfo();
+        if (path == null || "/".equals(path) || "/search".equals(path) || "/main".equals(path)) {
+            main(request, response);
+        } else if ("/login".equals(path)) {
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
+        } else if ("/register".equals(path)) {
+            request.getRequestDispatcher("/register.jsp").forward(request, response);
+        } else {
+            processRequest(request, response);
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
+        String path = request.getPathInfo();
+        if ("/login".equals(path)) {
+            login(request, response);
+        } else if ("/register".equals(path)) {
+            register(request, response);
+        } else {
+            processRequest(request, response);
+        }
     }
 }
