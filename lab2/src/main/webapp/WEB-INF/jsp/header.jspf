@@ -1,4 +1,4 @@
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="https://jakarta.ee/tags/core" %>
 <%@ page pageEncoding="UTF-8" %>
 <header>
     <div class="topnav">
