@@ -12,15 +12,23 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+
 
 @WebServlet(name = "FrontController", urlPatterns = {"/date-app/*"})
 public class FrontController extends HttpServlet {
     @EJB
     ProfileService profileService;
+    public enum InvitationStatus {
+        NONE, PENDING, ACCEPTED
+    }
+
 
     @Override
     public void init() {
@@ -55,11 +63,11 @@ public class FrontController extends HttpServlet {
                 case "/profile/update":
                     profileUpdate(request, response);
                     break;
+                case "/invitations":
+                    invitationView(request, response);
+                    break;
                 case "/invitation/send":
                     invitationSend(request, response);
-                    break;
-                case "/invitation/view":
-                    invitationView(request, response);
                     break;
                 case "/invitation/accept":
                     invitationAccept(request, response);
@@ -87,15 +95,38 @@ public class FrontController extends HttpServlet {
 
     protected void profileView(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        HttpSession session = req.getSession(false);
+        Profile currentUser = session == null ? null : (Profile) session.getAttribute("user");
+
         Long id = Long.valueOf(req.getParameter("id"));
-        Profile p = profileService.getById(id);
-        req.setAttribute("profile", p);
+        Profile profile = profileService.getById(id);
+        req.setAttribute("profile", profile);
 
-        req.setAttribute("invitations",
-                profileService.getReceivedInvitations(p));
+        boolean isOwner = currentUser != null && Objects.equals(currentUser.getId(), profile.getId());
+        InvitationStatus status = InvitationStatus.NONE;
 
-        req.getRequestDispatcher("/WEB-INF/jsp/profile.jsp")
-                .forward(req, resp);
+        if (currentUser != null && !isOwner) {
+            for (Invitation inv : profileService.getReceivedInvitations(currentUser)) {
+                if (Objects.equals(inv.getSender().getId(), profile.getId())) {
+                    status = inv.getAcceptStatus() ? InvitationStatus.ACCEPTED : InvitationStatus.PENDING;
+                    break;
+                }
+            }
+            if (status == InvitationStatus.NONE) {
+                for (Invitation inv : profileService.getSentInvitations(currentUser)) {
+                    if (Objects.equals(inv.getReceiver().getId(), profile.getId())) {
+                        status = inv.getAcceptStatus() ? InvitationStatus.ACCEPTED : InvitationStatus.PENDING;
+                        break;
+                    }
+                }
+            }
+        }
+
+        req.setAttribute("invStatus", status);
+        req.setAttribute("isOwner", isOwner);
+
+        req.setAttribute("invitations", profileService.getReceivedInvitations(profile));
+        req.getRequestDispatcher("/WEB-INF/jsp/profile.jsp").forward(req, resp);
     }
 
     protected void profileEdit(HttpServletRequest req, HttpServletResponse resp)
@@ -103,12 +134,13 @@ public class FrontController extends HttpServlet {
         Long id = Long.valueOf(req.getParameter("id"));
         Profile p = profileService.getById(id);
         req.setAttribute("profile", p);
-        req.getRequestDispatcher("/WEB-INF/jsp/editProfile.jsp")
+        req.getRequestDispatcher("/WEB-INF/jsp/profile-edit.jsp")
                 .forward(req, resp);
     }
 
     protected void profileUpdate(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+
         Long id = Long.valueOf(req.getParameter("id"));
         Profile p = profileService.getById(id);
 
@@ -122,6 +154,7 @@ public class FrontController extends HttpServlet {
 
     protected void invitationSend(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+
         Profile sender   = (Profile) req.getSession().getAttribute("user");
         Long    toId     = Long.valueOf(req.getParameter("toId"));
         Profile receiver = profileService.getById(toId);
@@ -136,28 +169,45 @@ public class FrontController extends HttpServlet {
     protected void invitationAccept(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         Profile receiver = (Profile) req.getSession().getAttribute("user");
-        Long    fromId   = Long.valueOf(req.getParameter("fromId"));
+
+        Long    fromId   = Long.valueOf(req.getParameter("invId"));
         Profile sender   = profileService.getById(fromId);
         Invitation inv = profileService.getReceivedInvitations(receiver)
                 .stream()
-                .filter(item -> Objects.equals(item.getId(), fromId))
+                .filter(item -> Objects.equals(sender.getId(), fromId))
                 .findFirst()
                 .get();
 
         profileService.acceptInvitation(sender, receiver, inv);
 
-        resp.sendRedirect(req.getContextPath() + "/date-app/invitation/inbox");
+        resp.sendRedirect(req.getContextPath() + "/date-app/invitations");
     }
 
     protected void invitationView(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         Profile user = (Profile) req.getSession().getAttribute("user");
+        Collection<Invitation> allIncoming = profileService.getReceivedInvitations(user);
+        Collection<Invitation> allOutgoing = profileService.getSentInvitations(user);
 
-        Collection<Invitation> incoming = profileService.getReceivedInvitations(user);
-        Collection<Invitation> outgoing = profileService.getSentInvitations(user);
+        List<Invitation> acceptedIncoming = allIncoming.stream()
+                .filter(Invitation::getAcceptStatus)
+                .collect(Collectors.toList());
+        List<Invitation> pendingIncoming = allIncoming.stream()
+                .filter(inv -> !inv.getAcceptStatus())
+                .collect(Collectors.toList());
 
-        req.setAttribute("incomingInvitations", incoming);
-        req.setAttribute("outgoingInvitations", outgoing);
+        List<Invitation> acceptedOutgoing = allOutgoing.stream()
+                .filter(Invitation::getAcceptStatus)
+                .collect(Collectors.toList());
+        List<Invitation> pendingOutgoing = allOutgoing.stream()
+                .filter(inv -> !inv.getAcceptStatus())
+                .collect(Collectors.toList());
+
+        req.setAttribute("acceptedIncoming", acceptedIncoming);
+        req.setAttribute("pendingIncoming", pendingIncoming);
+        req.setAttribute("acceptedOutgoing", acceptedOutgoing);
+        req.setAttribute("pendingOutgoing", pendingOutgoing);
+
         req.getRequestDispatcher("/WEB-INF/jsp/invitations.jsp").forward(req, resp);
     }
 
@@ -174,7 +224,7 @@ public class FrontController extends HttpServlet {
             return;
         }
 
-        if (user != null && !profileService.checkPass(user, password)) {
+        if (user == null || !profileService.checkPass(user, password)) {
             error(request, response, "Sorry, wrong password");
             request.getRequestDispatcher("/login.jsp").forward(request, response);
             return;
