@@ -3,53 +3,89 @@
   User: zwyntarsuimin
   Date: 20.05.2025
   Time: 16:49
-  To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="https://jakarta.ee/tags/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-  <%@include file="style.jspf"%>
-  <title>Invitations</title></head>
+  <title>Invitations</title>
+  <%@ include file="style.jspf" %>
+</head>
 <body>
-  <%@ include file="header.jspf" %>
-  <h2>Your Invitations</h2>
+<%@ include file="header.jspf" %>
 
-  <h3>Incoming Invitations</h3>
-  <c:if test="${empty incomingInvitations}">
-    <p>No incoming invitations.</p>
-  </c:if>
-  <c:forEach var="inv" items="${incomingInvitations}">
-    <div class="invitation">
-      <p>From user ID: <c:out value="${inv.fromId}"/></p>
-      <form method="post" action="/date-app/invitation/accept">
-        <input type="hidden" name="fromId" value="${inv.fromId}"/>
-        <button type="submit">Accept</button>
-      </form>
-        <%--    <form method="post" action="${pageContext.request.contextPath}/date-app/invitation/delete">--%>
-        <%--      <input type="hidden" name="toId" value="${sessionScope.user.id}"/>--%>
-        <%--      <input type="hidden" name="fromId" value="${inv.fromId}"/>--%>
-        <%--      <button type="submit">Delete</button>--%>
-        <%--    </form>--%>
-    </div>
-  </c:forEach>
+<div class="invitation-container">
 
-  <h3>Outgoing Invitations</h3>
-  <c:if test="${empty outgoingInvitations}">
-    <p>No outgoing invitations.</p>
-  </c:if>
-  <%--<c:forEach var="inv" items="${outgoingInvitations}">--%>
-  <%--  <div class="invitation">--%>
-  <%--    <p>To user ID: <c:out value="${inv.toId}"/></p>--%>
-  <%--    <form method="post" action="${pageContext.request.contextPath}/date-app/invitation/delete">--%>
-  <%--      <input type="hidden" name="toId" value="${inv.toId}"/>--%>
-  <%--      <input type="hidden" name="fromId" value="${sessionScope.user.id}"/>--%>
-  <%--      <button type="submit">Cancel Invitation</button>--%>
-  <%--    </form>--%>
-  <%--  </div>--%>
-  <%--</c:forEach>--%>
-</body>
-</html>
+  <!-- Accepted Incoming -->
+  <section class="inv-section">
+    <h3 class="section-title">Accepted Incoming</h3>
+    <c:if test="${empty acceptedIncoming}">
+      <p class="empty-message">No accepted incoming invitations.</p>
+    </c:if>
+    <c:forEach var="inv" items="${acceptedIncoming}">
+      <div class="invitation-card accepted-card">
+        <p><span class="inv-label">From:</span> <span class="inv-value">${inv.sender.username}</span></p>
+      </div>
+    </c:forEach>
+  </section>
+
+  <!-- Pending Incoming -->
+  <section class="inv-section">
+    <h3 class="section-title">Pending Incoming</h3>
+    <c:if test="${empty pendingIncoming}">
+      <p class="empty-message">You have no incoming invitations.</p>
+    </c:if>
+    <c:forEach var="inv" items="${pendingIncoming}">
+      <div class="invitation-card">
+        <p><span class="inv-label">From:</span> <span class="inv-value">${inv.sender.username}</span></p>
+        <div class="inv-actions">
+          <form method="post" action="${pageContext.request.contextPath}/date-app/invitation/accept" class="action-form">
+            <input type="hidden" name="invId" value="${inv.sender.id}"/>
+            <button type="submit" class="button accept-btn">Accept</button>
+          </form>
+          <form method="post" action="${pageContext.request.contextPath}/date-app/invitation/delete" class="action-form">
+            <input type="hidden" name="invId" value="${inv.id}"/>
+            <button type="submit" class="button delete-btn">Decline</button>
+          </form>
+        </div>
+      </div>
+    </c:forEach>
+  </section>
+
+  <!-- Accepted Outgoing -->
+  <section class="inv-section">
+    <h3 class="section-title">Accepted Outgoing</h3>
+    <c:if test="${empty acceptedOutgoing}">
+      <p class="empty-message">No accepted outgoing invitations.</p>
+    </c:if>
+    <c:forEach var="inv" items="${acceptedOutgoing}">
+      <div class="invitation-card accepted-card">
+        <p><span class="inv-label">To:</span> <span class="inv-value">${inv.receiver.username}</span></p>
+      </div>
+    </c:forEach>
+  </section>
+
+  <!-- Pending Outgoing -->
+  <section class="inv-section">
+    <h3 class="section-title">Pending Outgoing</h3>
+    <c:if test="${empty pendingOutgoing}">
+      <p class="empty-message">You have no outgoing invitations.</p>
+    </c:if>
+    <c:forEach var="inv" items="${pendingOutgoing}">
+      <div class="invitation-card">
+        <p><span class="inv-label">To:</span> <span class="inv-value">${inv.receiver.username}</span></p>
+        <div class="inv-actions">
+          <form method="post" action="${pageContext.request.contextPath}/date-app/invitation/delete" class="action-form">
+            <input type="hidden" name="invId" value="${inv.id}"/>
+            <button type="submit" class="button cancel-btn">Cancel</button>
+          </form>
+        </div>
+      </div>
+    </c:forEach>
+  </section>
+
+</div>
 
 <%@ include file="footer.jspf" %>
-
+</body>
+</html>
