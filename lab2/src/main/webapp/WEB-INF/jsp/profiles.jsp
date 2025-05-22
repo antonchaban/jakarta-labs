@@ -6,7 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="c" uri="https://jakarta.ee/tags/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
     <title>Profiles</title>
@@ -21,11 +22,6 @@
 
 <c:forEach var="profile" items="${profiles}">
     <div class="job-wrapper">
-        <c:out value="${pageContext.session.id}" /><br/>
-        <c:forEach var="attr" items="${pageContext.session.attributeNames}">
-            ${attr} = ${pageContext.session.getAttribute(attr)}<br/>
-        </c:forEach>
-        <hr/>
         <h2>
             <a href="/date-app/profile?id=${profile.id}">
                 <c:out value="${profile.username}"/>
