@@ -29,10 +29,10 @@
       background-image: url("https://i.pinimg.com/originals/46/1d/25/461d254f8563f8945ce3a385f289df17.jpg");
       display: flex;
       flex-direction: column;
-      height: calc(100%);
-      position: absolute;
-      place-content: center;
-      width: calc(100%);
+      height: 100vh;
+      width: 100vw;
+      align-content: center;
+      justify-content: center;
     }
     @media (max-width: 767px) {
       .page {
@@ -45,18 +45,20 @@
       display: flex;
       height: 320px;
       margin: 0 auto;
-      width: 640px;
+      width: 700px;
+      align-items: center;
+      justify-content: center;
     }
     @media (max-width: 767px) {
       .container {
         flex-direction: column;
         height: 630px;
-        width: 320px;
+        width: 400px;
       }
     }
     .left {
       background: rgba(255, 255, 255, 0);
-      height: calc(100% - 40px);
+      height: 100%;
       top: 20px;
       position: relative;
       width: 50%;
@@ -84,7 +86,12 @@
       background: #474a59;
       box-shadow: 0px 0px 40px 16px rgba(0, 0, 0, 0.22);
       color: #f1f1f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
       position: relative;
+      min-height: 250px;
       width: 50%;
     }
     @media (max-width: 767px) {
@@ -92,7 +99,7 @@
         flex-shrink: 0;
         height: 100%;
         width: 100%;
-        max-height: 350px;
+        padding: 2rem;
       }
     }
     svg {
@@ -106,7 +113,6 @@
       stroke-dasharray: 240 1386;
     }
     .form {
-      margin: 40px;
       position: absolute;
     }
     label {
@@ -124,14 +130,16 @@
       font-size: 20px;
       height: 30px;
       line-height: 30px;
-      outline: none !important;
+      outline: 1px solid white;
       width: 100%;
     }
     input::-moz-focus-inner {
       border: 0;
     }
     #submit {
-      color: #707075;
+      background-color: #2196F3;
+      border-radius: 10px;
+      color: white;
       margin-top: 40px;
       transition: color 300ms;
     }
@@ -140,6 +148,12 @@
     }
     #submit:active {
       color: #d0d0d2;
+    }
+
+    .form {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
     }
 
   </style>
@@ -152,15 +166,6 @@
       <div class="eula">By logging in you agree to check out our awesome dating app</div>
     </div>
     <div class="right">
-      <svg viewBox="0 0 320 300">
-        <defs>
-          <linearGradient inkscape:collect="always" id="linearGradient" x1="13" y1="193.49992" x2="307" y2="193.49992" gradientUnits="userSpaceOnUse">
-            <stop style="stop-color:#ff00ff;" offset="0" id="stop876" />
-            <stop style="stop-color:#ff0000;" offset="1" id="stop878" />
-          </linearGradient>
-        </defs>
-        <path d="m 40,120.00016 239.99984,-3.2e-4 c 0,0 24.99263,0.79932 25.00016,35.00016 0.008,34.20084 -25.00016,35 -25.00016,35 h -239.99984 c 0,-0.0205 -25,4.01348 -25,38.5 0,34.48652 25,38.5 25,38.5 h 215 c 0,0 20,-0.99604 20,-25 0,-24.00396 -20,-25 -20,-25 h -190 c 0,0 -20,1.71033 -20,25 0,24.00396 20,25 20,25 h 168.57143" />
-      </svg>
       <form method="post" action="/date-app/login" class="form" >
         <label for="email">Email</label>
         <input type="email" id="email" name="login">
