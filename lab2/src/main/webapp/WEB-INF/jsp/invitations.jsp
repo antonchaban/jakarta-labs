@@ -52,7 +52,6 @@
     </c:forEach>
   </section>
 
-  <!-- Accepted Outgoing -->
   <section class="inv-section">
     <h3 class="section-title">Accepted Outgoing</h3>
     <c:if test="${empty acceptedOutgoing}">
@@ -65,7 +64,6 @@
     </c:forEach>
   </section>
 
-  <!-- Pending Outgoing -->
   <section class="inv-section">
     <h3 class="section-title">Pending Outgoing</h3>
     <c:if test="${empty pendingOutgoing}">
