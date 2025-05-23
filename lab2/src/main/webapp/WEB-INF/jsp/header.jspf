@@ -12,8 +12,8 @@
         </c:if>
         <c:if test="${!empty user}">
             <div class="login-container">
-                <div style="outline: 1px solid black; border-radius: 10px; padding: 5px;">
-                    <a href="/date-app/profile?id=${user.id}"><c:out value="${user.username}"/></a>
+                <div style="outline: 1px solid black; border-radius: 10px;">
+                    <a href="/date-app/profile?id=${user.id}" style="padding: 5px !important;"><c:out value="${user.username}"/></a>
                 </div>
                 <form action="/date-app/logout" method="POST">
                     <button type="submit">Logout</button>
