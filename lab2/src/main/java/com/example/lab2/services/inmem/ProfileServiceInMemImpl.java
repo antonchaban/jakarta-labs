@@ -1,8 +1,8 @@
 package com.example.lab2.services.inmem;
 
 import com.example.lab2.dao.inmem.DaoFactory;
-import com.example.lab2.models.Invitation;
-import com.example.lab2.models.Profile;
+import com.example.lab2.models.inmem.Invitation;
+import com.example.lab2.models.inmem.Profile;
 
 import java.util.Collection;
 import java.util.function.UnaryOperator;

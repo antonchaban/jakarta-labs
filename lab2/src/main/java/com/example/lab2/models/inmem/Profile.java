@@ -1,4 +1,4 @@
-package com.example.lab2.models;
+package com.example.lab2.models.inmem;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
