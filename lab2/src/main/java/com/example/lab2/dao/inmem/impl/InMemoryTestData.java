@@ -1,9 +1,9 @@
 package com.example.lab2.dao.inmem.impl;
 
-import com.example.lab2.models.Invitation;
-import com.example.lab2.models.PrivateInfo;
-import com.example.lab2.models.Profile;
-import com.example.lab2.models.PublicInfo;
+import com.example.lab2.models.inmem.Invitation;
+import com.example.lab2.models.inmem.PrivateInfo;
+import com.example.lab2.models.inmem.Profile;
+import com.example.lab2.models.inmem.PublicInfo;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.example.lab2.dao.inmem.impl;
 
 import com.example.lab2.dao.inmem.DaoFactory;
-import com.example.lab2.models.Profile;
+import com.example.lab2.models.inmem.Profile;
 
 import java.util.*;
 
