@@ -235,13 +235,13 @@ public class FrontController extends HttpServlet {
 
         if (login == null || password == null) {
             request.setAttribute("error", "Please provide login and password");
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(request, response);
             return;
         }
 
         if (user == null || !profileService.checkPass(user, password)) {
             error(request, response, "Sorry, wrong password");
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(request, response);
             return;
         }
 
@@ -257,7 +257,7 @@ public class FrontController extends HttpServlet {
 
         if (username == null || email == null || password == null || request.getParameter("age") == null) {
             request.setAttribute("error","All fields are required");
-            request.getRequestDispatcher("/register.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/jsp/register.jsp").forward(request, response);
             return;
         }
 
@@ -284,9 +284,9 @@ public class FrontController extends HttpServlet {
         if (path == null || "/".equals(path) || "/search".equals(path) || "/main".equals(path)) {
             main(request, response);
         } else if ("/login".equals(path)) {
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
         } else if ("/register".equals(path)) {
-            request.getRequestDispatcher("/register.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/jsp/register.jsp").forward(request, response);
         } else {
             processRequest(request, response);
         }

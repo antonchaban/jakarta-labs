@@ -1,38 +1,26 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page pageEncoding="UTF-8" %>
 <header>
-    <div class="topnav">
-        <a class="active" href="/date-app/home">Home</a>
-        <c:if test="${!empty profile}">
-            <div class="creating">
-                <form action="/date-app/register" method="POST">
-                    <button type="submit">Create New Profile</button>
-                </form>
-            </div>
-        </c:if>
-        <c:if test="${!empty user}">
-            <div class="login-container">
-                <div style="outline: 1px solid black; border-radius: 10px;">
-                    <a href="/date-app/profile?id=${user.id}" style="padding: 5px !important;"><c:out value="${user.username}"/></a>
-                </div>
-                <form action="/date-app/logout" method="POST">
-                    <button type="submit">Logout</button>
-                </form>
-            </div>
-        </c:if>
-        <c:if test="${empty user}">
-            <div class="login-container">
-                <form action="/date-app/login" method="POST">
-                    <button type="submit">Login</button>
-                    <button type="submit" formaction="register">Register</button>
-                </form>
-            </div>
-        </c:if>
-        <div class="search-container">
-            <form action="/date-app/search">
-                <input type="text" placeholder="Search.." name="search">
-                <button type="submit">🔍</button>
-            </form>
-        </div>
-    </div>
+    <nav class="nav-bar">
+        <a href="${pageContext.request.contextPath}/date-app/" class="nav-logo">DatingApp</a>
+        <ul class="nav-links">
+            <li><a href="${pageContext.request.contextPath}/date-app/">Home</a></li>
+            <c:if test="${empty sessionScope.user}">
+                <li><a href="${pageContext.request.contextPath}/date-app/login">Login</a></li>
+                <li><a href="${pageContext.request.contextPath}/date-app/register">Register</a></li>
+            </c:if>
+            <c:if test="${not empty sessionScope.user}">
+                <li><a href="${pageContext.request.contextPath}/date-app/profile?id=${sessionScope.user.id}">${sessionScope.user.username}</a></li>
+                <li>
+                    <form class="inline-form" action="${pageContext.request.contextPath}/date-app/logout" method="post">
+                        <button type="submit" class="button logout-btn">Logout</button>
+                    </form>
+                </li>
+            </c:if>
+        </ul>
+        <form class="search-form" action="${pageContext.request.contextPath}/date-app/search" method="get">
+            <input type="text" name="search" placeholder="Search profiles..." class="search-input" />
+            <button type="submit" class="button search-btn">🔍</button>
+        </form>
+    </nav>
 </header>
