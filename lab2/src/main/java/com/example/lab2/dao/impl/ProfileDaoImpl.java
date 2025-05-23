@@ -6,6 +6,7 @@ import com.example.lab2.entities.Invitation;
 import jakarta.ejb.Local;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.TypedQuery;
+
 import java.util.Collection;
 
 @Stateless
@@ -41,16 +42,39 @@ public class ProfileDaoImpl extends AbstractDaoImpl<Profile> implements ProfileD
     }
 
     @Override
+    public boolean isInvitationExists(Long senderId, Long receiverId) {
+        Long count = em.createQuery(
+                        "SELECT count(i) FROM Invitation i " +
+                                " WHERE i.sender.id = :s AND i.receiver.id = :r", Long.class)
+                .setParameter("s", senderId)
+                .setParameter("r", receiverId)
+                .getSingleResult();
+        return count != null && count > 0;
+    }
+
+    @Override
     public void addInvitation(Profile sender, Profile receiver, Invitation invitation) {
+        if (isInvitationExists(sender.getId(), receiver.getId())) {
+            throw new IllegalStateException("Invitation already exists");
+        }
+
         invitation.setSender(sender);
         invitation.setReceiver(receiver);
+        sender.getSentInvitations().add(invitation);
+        receiver.getReceivedInvitations().add(invitation);
         em.persist(invitation);
+        em.merge(sender);
+        em.merge(receiver);
     }
 
     @Override
     public void deleteInvitation(Profile sender, Profile receiver, Invitation invitation) {
+        sender.getSentInvitations().removeIf(inv -> inv.getId().equals(invitation.getId()));
+        receiver.getReceivedInvitations().removeIf(inv -> inv.getId().equals(invitation.getId()));
         Invitation inv = em.find(Invitation.class, invitation.getId());
-        if (inv != null) em.remove(inv);
+        if (inv != null) {
+            em.remove(inv);
+        }
     }
 
     @Override
@@ -59,6 +83,7 @@ public class ProfileDaoImpl extends AbstractDaoImpl<Profile> implements ProfileD
         if (inv != null) {
             inv.setAcceptStatus(true);
             em.merge(inv);
+            invitation.setAcceptStatus(true);
         }
     }
 }

@@ -10,6 +10,7 @@ public interface ProfileDao extends AbstractDao<Profile> {
     Profile findById(Long id);
     Collection<Profile> findByText(String string);
 
+    boolean isInvitationExists(Long senderId, Long receiverId);
     void newProfile(Profile profile);
     void addInvitation(Profile sender, Profile receiver, Invitation invitation);
     void deleteInvitation(Profile sender, Profile receiver, Invitation invitation);
