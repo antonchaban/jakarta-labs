@@ -143,14 +143,16 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Override
     public void acceptInvitationFromUser(Profile receiver, Long senderId) {
-        Profile sender   = getById(senderId);
         Invitation inv = getReceivedInvitations(receiver)
                 .stream()
-                .filter(item -> Objects.equals(sender.getId(), senderId))
+                .filter(item -> Objects.equals(item.getSender().getId(), senderId))
+                .filter(item -> !item.getAcceptStatus())
                 .findFirst()
-                .get();
-        acceptInvitation(sender, receiver, inv);
+                .orElseThrow(() -> new IllegalStateException("No pending invitation from this user"));
+
+        acceptInvitation(inv.getSender(), receiver, inv);
     }
+
 
     @Override
     public void deleteInvitation(Profile sender, Profile receiver, Invitation invitation) {
