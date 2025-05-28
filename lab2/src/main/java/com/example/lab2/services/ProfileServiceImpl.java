@@ -6,7 +6,6 @@ import com.example.lab2.entities.PrivateInfo;
 import com.example.lab2.entities.Profile;
 import com.example.lab2.entities.PublicInfo;
 import com.example.lab2.models.CategorizedInvitations;
-import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Local;
 import jakarta.ejb.Stateless;
@@ -17,7 +16,6 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.UnaryOperator;
 
 
 @Stateless
