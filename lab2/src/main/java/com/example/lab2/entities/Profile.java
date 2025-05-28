@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.mindrot.jbcrypt.BCrypt;
+
 
 @Entity
 @Table(name = "profiles")
@@ -30,5 +32,14 @@ public class Profile {
 
     @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Invitation> receivedInvitations = new ArrayList<>();
+
+    @PrePersist
+    @PreUpdate
+    private void hashPassword() {
+        if (privateInfo != null) {
+            String hashedPassword = BCrypt.hashpw(privateInfo.getPassword(), BCrypt.gensalt(12));
+            privateInfo.setPassword(hashedPassword);
+        }
+    }
 
 }

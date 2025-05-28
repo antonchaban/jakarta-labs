@@ -6,10 +6,13 @@ import com.example.lab2.entities.PrivateInfo;
 import com.example.lab2.entities.Profile;
 import com.example.lab2.entities.PublicInfo;
 import com.example.lab2.models.CategorizedInvitations;
+import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Local;
 import jakarta.ejb.Stateless;
 import jakarta.ws.rs.NotFoundException;
+import org.mindrot.jbcrypt.BCrypt;
+
 
 import java.util.Collection;
 import java.util.List;
@@ -22,7 +25,12 @@ import java.util.function.UnaryOperator;
 public class ProfileServiceImpl implements ProfileService{
     @EJB
     DaoFactory daoFactory;
-    UnaryOperator<String> passHasher = UnaryOperator.identity();
+    UnaryOperator<String> passHasher;
+
+    @PostConstruct
+    private void initHasher() {
+        this.passHasher = raw -> BCrypt.hashpw(raw, BCrypt.gensalt(12));
+    }
 
     @Override
     public Profile getByLogin(String login) {
@@ -41,7 +49,8 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Override
     public boolean checkPass(Profile profile, String password) {
-        return profile.getPrivateInfo().getPassword().equals(passHasher.apply(password));
+        String hashed = profile.getPrivateInfo().getPassword();
+        return BCrypt.checkpw(password, hashed);
     }
 
     @Override
