@@ -161,6 +161,7 @@ public class FrontController extends HttpServlet {
         p.setUsername(req.getParameter("username"));
         p.getPublicInfo().setAge(Integer.parseInt(req.getParameter("age")));
         p.getPublicInfo().setBio(req.getParameter("bio"));
+        p.getPrivateInfo().setPassword(req.getParameter("newPassword"));
         profileService.updateProfile(p);
 
         resp.sendRedirect(req.getContextPath() + "/date-app/profile?id=" + id);
