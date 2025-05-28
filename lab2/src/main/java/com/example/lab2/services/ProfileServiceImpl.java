@@ -25,12 +25,6 @@ import java.util.function.UnaryOperator;
 public class ProfileServiceImpl implements ProfileService{
     @EJB
     DaoFactory daoFactory;
-    UnaryOperator<String> passHasher;
-
-    @PostConstruct
-    private void initHasher() {
-        this.passHasher = raw -> BCrypt.hashpw(raw, BCrypt.gensalt(12));
-    }
 
     @Override
     public Profile getByLogin(String login) {
